@@ -1,0 +1,10 @@
+version: '2'
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=computer1
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+    ports:
+      - '5432:5432'
