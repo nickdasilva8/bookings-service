@@ -1,3 +1,4 @@
-import { Film } from './films';
+import { Film, FilmWithTime, FilmObjectFormatted } from './films';
+import { Seat } from './seating';
 
-export { Film };
+export { Film, FilmWithTime, FilmObjectFormatted, Seat };
