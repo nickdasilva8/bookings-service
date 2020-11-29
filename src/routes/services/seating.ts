@@ -37,7 +37,11 @@ export const batchUpdateSeats = async (
 };
 
 /**
+ * Inserts a new booking.
  *
+ * 1. Inserts the new booking into the users_bookings table. Returns the ID.
+ * 2. Uses the above ID to insert all seats (by their id) against the above booking ID, making a many to many table
+ * 3. Takes all the Seat IDs and updates them to booked = true and updated the last_updates column.
  */
 export const insertNewBooking = (
   bookingsObject: BookingsObject

@@ -1,17 +1,15 @@
 # bookings-service
 
-### Good to know
-
-- Project is based on 'TypeScript Node Starter'.
-- `git commit` runs husky (linter and tests)
-  - if tests are failing due to a db connection issue, make sure you have the testdb up and running for tests to run against - see 'Testing' section
-  - try `yarn lint-and-test` in a terminal, if they all pass, try committing again
-
 ## Running locally
 
 - `yarn`
 - `docker-compose up`
+  - If you want to delete the database (tear it down) and start again, run the code below.
+    `docker-compose down && docker-compose up`
+  - The start up migration inserts 7 days worth of screens. If you start it today and come back in 5 days, it wont work properly.
+  - This would have a cron job running once a night creating new rows (for more than 7 days for safety) and then also archiving any past dates.
 - `yarn watch`
+  - Your service should now be available on http://localhost:3001
 
 ## Database Migrations (knex.js)
 
@@ -27,4 +25,3 @@
 
   https://knexjs.org/
   http://perkframework.com/v1/guides/database-migrations-knex.html - beginner's guide to writing migrations
-

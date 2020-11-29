@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import Joi from 'joi';
+import dayjs from 'dayjs';
 
 // services
 import {
@@ -29,11 +30,14 @@ router.get('/list', async (req, res) => {
 });
 
 /**
+ * Returns all the films with all their sites by date.
  * @returns FilmObjectFormatted[]
  */
-router.get('/list-with-time', async (req, res) => {
+router.get('/list-with-time/:date', async (req, res) => {
+  const { date } = req.params;
+  const dateFormat = dayjs(date).format('YYYY/MM/DD');
   try {
-    const films = await getAllFilmsWithTimes();
+    const films = await getAllFilmsWithTimes(dateFormat);
 
     const formattedFilms = FormatAllFilmsWithShowingTimes(films);
 
@@ -48,14 +52,15 @@ router.get('/list-with-time', async (req, res) => {
  * Gets all the seats for a film at a time
  * @returns Seat[]
  */
-router.get('/:filmId/:time', async (req, res) => {
-  const { filmId, time } = req.params;
+router.get('/:filmId/:time/:date', async (req, res) => {
+  const { filmId, time, date } = req.params;
+  const dateFormat = dayjs(date).format('YYYY/MM/DD');
 
   let seatsToUnlock: SeatToUpdate[] = [];
   try {
     const filmIdAsInt = Joi.attempt(filmId, Joi.number());
 
-    let films = await getAllSeatsForFilm(filmIdAsInt, time);
+    let films = await getAllSeatsForFilm(filmIdAsInt, time, dateFormat);
 
     // a way to determine locked state by last updated
     const formattedFilms = films.map((film) => {

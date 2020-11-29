@@ -1,4 +1,5 @@
 import db from '../../database';
+import dayjs from 'dayjs';
 
 import { Film, FilmWithTime, Seat } from '../../types';
 
@@ -13,11 +14,12 @@ export const getAllFilms = (): Promise<Film[]> =>
  * Gets all the films and all their showing times
  * ToDo :: This can easily be extended to get the times for a specific date - without this it's not really useable in a real environment.
  */
-export const getAllFilmsWithTimes = (): Promise<FilmWithTime[]> =>
+export const getAllFilmsWithTimes = (date: string): Promise<FilmWithTime[]> =>
   db
     .select('*')
     .from('films')
-    .leftJoin('screens', 'films.id', 'screens.film_id');
+    .leftJoin('screens', 'films.id', 'screens.film_id')
+    .where({ showing_date: new Date(date) });
 
 /**
  * Gets all the seats by film and showing time
@@ -25,7 +27,8 @@ export const getAllFilmsWithTimes = (): Promise<FilmWithTime[]> =>
  */
 export const getAllSeatsForFilm = (
   filmId: number,
-  timeSlot: string
+  timeSlot: string,
+  date: string
 ): Promise<Seat[]> =>
   db
     .select(
@@ -42,4 +45,5 @@ export const getAllSeatsForFilm = (
     .leftJoin('seating', 'screens.id', 'seating.screen_id')
     .where('screens.film_id', '=', filmId)
     .andWhere('screens.time_slot', '=', timeSlot)
+    .andWhere('screens.showing_date', '=', new Date(date))
     .orderBy('seating.id', 'asc');
