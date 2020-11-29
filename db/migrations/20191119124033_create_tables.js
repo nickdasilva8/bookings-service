@@ -26,25 +26,28 @@ exports.up = (knex) =>
       table.boolean('locked');
       table.timestamps(true, true);
     })
-    .createTable('bookings', (table) => {
+    .createTable('users_bookings', (table) => {
       table.increments('id').primary();
       table.string('email').notNullable();
       table.string('name').notNullable();
+    })
+    .createTable('bookings', (table) => {
+      table.increments('id').primary();
+      table
+        .integer('users_bookings_id')
+        .references('id')
+        .inTable('users_bookings');
       table
         .integer('seating_id')
         .references('id')
         .inTable('seating');
-      table
-        .integer('film_id')
-        .references('id')
-        .inTable('films');
     })
     .then(function() {
       // generate the list of films
       return knex('films').insert([
-        { name: 'The Grinch' },
-        { name: 'Happy Gilmore' },
-        { name: 'Ragnarok' }
+        { name: 'Frozen' },
+        { name: 'Toy Story' },
+        { name: 'Antz' }
       ]);
     })
     .then(function() {
@@ -266,32 +269,6 @@ exports.up = (knex) =>
         { screen_id: 18, position: '3A', booked: false, locked: false },
         { screen_id: 18, position: '3B', booked: false, locked: false },
         { screen_id: 18, position: '3C', booked: false, locked: false }
-      ]);
-    })
-    .then(function() {
-      // book some seats so that the UI shows something different conditions
-      return knex('bookings').insert([
-        // 10:00 for film 1 (POS 1B)
-        {
-          email: 'joeblogs@domain.com',
-          name: 'Jow Blogs',
-          seating_id: 2,
-          film_id: 1
-        },
-        // 10:00 for film 1 (POS 2A)
-        {
-          email: 'joeblogs@domain.com',
-          name: 'Jow Blogs',
-          seating_id: 4,
-          film_id: 1
-        },
-        // 10:00 for film 1 (POS 2B)
-        {
-          email: 'joeblogs@domain.com',
-          name: 'Jow Blogs',
-          seating_id: 5,
-          film_id: 1
-        }
       ]);
     });
 

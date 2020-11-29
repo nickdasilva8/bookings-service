@@ -30,15 +30,16 @@ export const getAllSeatsForFilm = (
   db
     .select(
       'seating.id',
-      'seating.screen_id',
+      'seating.screen_id as screenId',
       'seating.position',
       'seating.booked',
       'seating.locked',
-      'screens.film_id',
-      'screens.time_slot',
-      'seating.updated_at'
+      'screens.film_id as filmId',
+      'screens.time_slot as timeSlot',
+      'seating.updated_at as updatedAt'
     )
     .from('screens')
-    .leftJoin('seating', 'screens.screen_number', 'seating.screen_id')
+    .leftJoin('seating', 'screens.id', 'seating.screen_id')
     .where('screens.film_id', '=', filmId)
-    .andWhere('screens.time_slot', '=', timeSlot);
+    .andWhere('screens.time_slot', '=', timeSlot)
+    .orderBy('seating.id', 'asc');

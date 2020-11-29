@@ -20,6 +20,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
+    "dayjs": "^1.9.6",
     "express": "^4.17.1",
     "joi": "^17.3.0",
     "knex": "^0.20.2",

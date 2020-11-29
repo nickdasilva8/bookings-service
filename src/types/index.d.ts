@@ -1,4 +1,13 @@
 import { Film, FilmWithTime, FilmObjectFormatted } from './films';
-import { Seat } from './seating';
+import { Seat, SeatMinimum, SeatToUpdate } from './seating';
+import { BookingsObject } from './bookings';
 
-export { Film, FilmWithTime, FilmObjectFormatted, Seat };
+export {
+  Film,
+  FilmWithTime,
+  FilmObjectFormatted,
+  Seat,
+  SeatMinimum,
+  SeatToUpdate,
+  BookingsObject
+};
